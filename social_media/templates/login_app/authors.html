@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+{% extends 'nav.html' %}
+{% block title %}Profile{% endblock %}
+{% block css %}
+<style>
+
+    .cover{
+        width:200px;
+        height:200px;
+        overflow:hidden;
+
+    }
+        .cover img{
+        width:300px;
+        height:150px;
+        margin-left:5px;
+    }
+
+</style>
+{% endblock %}
+{% block navcontent %}
+<center>
+<div  class="row container" style="margin-top:5px;">
+    <div class="col-sm-12">
+        {% if author.user_profile.coverpic %}
+        <img src="/media/{{author.user_profile.coverpic}}" width="1000px" height="200px">
+        {% else %}
+        <img src="/media/coverpics/default-cover.jpg" width="1000px" height="200px">
+        {% endif %}
+    </div>
+</div>
+</center>
+<center>
+<div class="row container" style="margin-top:-80px;">
+    <div class="col-sm-12">
+        {% if author.user_profile.profilepic %}
+        <img src="/media/{{author.user_profile.profilepic}}" class="rounded-circle" width="200px;" style="margin-top:30px;">
+        {% else %}
+        <img src="/media/profile_pic/default7.jpg" class="rounded-circle" width="200px;" style="margin-top:;">
+        {% endif %}
+    </div>
+</div>
+</center>
+<div class="row container" style=" margin-left: 24px; margin-top: 15px; ">
+    <div class="col-sm-6">
+        <h3>
+            {{author.username}}&ensp;
+            {% if not already_follow %}
+            <a class="btn btn-info  btn-sm" href="{% url 'login_app:follow' username=author.username %}">Follow</a>
+            {% else %}
+            <a class="btn btn-info  btn-sm" href="{% url 'login_app:unfollow' username=author.username %}">Unfollow</a>
+            {% endif %}
+        </h3>
+        <h4>Full Name:&nbsp;{{author.user_profile.full_name}}</h4>
+        <p>{{author.user_profile.description}}</p>
+        <h4>Website:&ensp;{{author.user_profile.website}}</h4>
+        <h4>Facebook:&ensp;{{author.user_profile.facebook}}</h4>
+        <h4>Posts:&ensp;{{author.post.count}} Followers:&ensp;{{author.followings.count}} Following:&ensp;{{author.followers.count}}</h4>
+    </div>
+</div>
+<hr>
+<div class="row">
+    {% for post in author.post.all %}
+    <div class="col-sm-4 cover">
+
+            <img src="/media/{{post.image}}"><br>&nbsp;
+            Likes:&nbsp;{{post.liked_post.count}}&ensp;Dislikes:&nbsp;{{post.disliked_post.count}}
+            <p style="margin-left:5px;">{{post.caption}}</p>
+
+    </div>
+    {% endfor %}
+
+</div>
+
+{% endblock %}
